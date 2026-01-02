@@ -6,3 +6,4 @@ include:
     shield: velvet_v3_ui_right
     snippet: studio-rpc-usb-uart
     cmake-args: -DCONFIG_ZMK_STUDIO=y
+

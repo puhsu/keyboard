@@ -1,15 +1,25 @@
 #include "keys_ru.h"
+#include <behaviors.dtsi>
 #include <dt-bindings/zmk/input_transform.h>
 #include <input/processors.dtsi>
 #include <zephyr/dt-bindings/input/input-event-codes.h>
-#include <behaviors.dtsi>
-#include <dt-bindings/zmk/bt.h>
+
 #include <dt-bindings/zmk/keys.h>
+
+#include <dt-bindings/zmk/bt.h>
 #include <dt-bindings/zmk/outputs.h>
 #include <dt-bindings/zmk/pointing.h>
 
+#define QUICK_TAP_MS 175
+
+// Key position groups for hold-tap
+#define KEYS_L 0 1 2 3 4 5 12 13 14 15 16 17 24 25 26 27 28 29
+#define KEYS_R 6 7 8 9 10 11 18 19 20 21 22 23 30 31 32 33 34 35
+#define THUMBS 36 37 38 39 40 41 42 43 44 45
+
 / {
     behaviors {
+        // TODO: Investigate, this is probably trackball related
         cap_sen: cap_sen {
             compatible = "zmk,behavior-hold-tap";
             label = "CAP_SEN";
@@ -34,17 +44,41 @@
             require-prior-idle-ms = <800>;
             excluded-positions = <>;
         };
+
+        hml: hml {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            bindings = <&kp>, <&kp>;
+            flavor = "balanced";
+            tapping-term-ms = <280>;
+            quick-tap-ms = <QUICK_TAP_MS>;
+            require-prior-idle-ms = <150>;
+            hold-trigger-on-release;
+            hold-trigger-key-positions = <KEYS_R THUMBS>;
+        };
+
+        hmr: hmr {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            bindings = <&kp>, <&kp>;
+            flavor = "balanced";
+            tapping-term-ms = <280>;
+            quick-tap-ms = <QUICK_TAP_MS>;
+            require-prior-idle-ms = <150>;
+            hold-trigger-on-release;
+            hold-trigger-key-positions = <KEYS_L THUMBS>;
+        };
     };
 
-    keymap {
+    Keymap {
         compatible = "zmk,keymap";
 
         base {
             bindings = <
-&kp ESC    &kp Q  &kp W     &kp E     &kp R      &kp T                        &kp Y  &kp U  &kp I      &kp O     &kp P     &kp BSPC
-&kp TAB    &kp A  &kp S     &kp D     &kp F      &kp G                        &kp H  &kp J  &kp K      &kp L     &kp SEMI  &kp BSLH
-&kp LSHFT  &kp Z  &kp X     &kp C     &kp V      &kp B                        &kp N  &kp M  &kp COMMA  &kp DOT   &kp SQT   &kp RSHFT
-                  &kp LALT  &kp LGUI  &kp LCTRL  &mo 1  &kp SPACE    &kp RET  &mo 2  &none  &kp LBKT   &kp RBKT
+&kp ESC    &kp Q  &kp W         &kp F        &kp P         &kp G                        &kp J  &kp L         &kp U        &kp Y        &kp SEMI  &kp BSPC
+&kp TAB    &kp A  &hml LGUI R   &hml LALT S  &hml LCTRL T  &kp D                        &kp H  &hmr LCTRL N  &hmr LALT E  &hmr LGUI I  &kp O     &kp SQT
+&kp GRAVE  &kp Z  &kp X         &kp C        &kp V         &kp B                        &kp K  &kp M         &kp COMMA    &kp DOT      &kp FSLH  &none
+                  &none         &none        &kp SPACE     &mo 1  &kp LSHIFT   &kp RET  &mo 2  &none         &kp LBKT     &kp RBKT
             >;
 
             display-name = "Base";
@@ -114,50 +148,6 @@
             >;
 
             display-name = "Sniper";
-        };
-
-        User0 {
-            bindings = <
-&trans  &trans  &trans  &trans  &trans  &trans                    &trans  &trans  &trans  &trans  &trans  &trans
-&trans  &trans  &trans  &trans  &trans  &trans                    &trans  &trans  &trans  &trans  &trans  &trans
-&trans  &trans  &trans  &trans  &trans  &trans                    &trans  &trans  &trans  &trans  &trans  &trans
-                &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans  &trans  &trans
-            >;
-
-            display-name = "User0";
-        };
-
-        User1 {
-            bindings = <
-&trans  &trans  &trans  &trans  &trans  &trans                    &trans  &trans  &trans  &trans  &trans  &trans
-&trans  &trans  &trans  &trans  &trans  &trans                    &trans  &trans  &trans  &trans  &trans  &trans
-&trans  &trans  &trans  &trans  &trans  &trans                    &trans  &trans  &trans  &trans  &trans  &trans
-                &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans  &trans  &trans
-            >;
-
-            display-name = "User1";
-        };
-
-        User2 {
-            bindings = <
-&trans  &trans  &trans  &trans  &trans  &trans                    &trans  &trans  &trans  &trans  &trans  &trans
-&trans  &trans  &trans  &trans  &trans  &trans                    &trans  &trans  &trans  &trans  &trans  &trans
-&trans  &trans  &trans  &trans  &trans  &trans                    &trans  &trans  &trans  &trans  &trans  &trans
-                &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans  &trans  &trans
-            >;
-
-            display-name = "User2";
-        };
-
-        User3 {
-            bindings = <
-&trans  &trans  &trans  &trans  &trans  &trans                    &trans  &trans  &trans  &trans  &trans  &trans
-&trans  &trans  &trans  &trans  &trans  &trans                    &trans  &trans  &trans  &trans  &trans  &trans
-&trans  &trans  &trans  &trans  &trans  &trans                    &trans  &trans  &trans  &trans  &trans  &trans
-                &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans  &trans  &trans
-            >;
-
-            display-name = "User3";
         };
     };
 };

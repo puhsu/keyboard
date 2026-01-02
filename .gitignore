@@ -1,0 +1,7 @@
+.direnv
+.build
+.west
+deps
+firmware
+# not ready yet
+wip 

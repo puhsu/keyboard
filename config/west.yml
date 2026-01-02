@@ -1,0 +1,13 @@
+manifest:
+  remotes:
+    - name: ergohaven
+      url-base: https://github.com/ergohaven
+  projects:
+    - name: ergohaven-zmk
+      remote: ergohaven
+      revision: 7022ac90ce2df5842cdcdbe414dccf661cc1ba26
+      import:
+        file: config/west.yml
+        path-prefix: deps
+  self:
+    path: config
